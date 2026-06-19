@@ -239,6 +239,17 @@ namespace ActividadPractica2ServiciosWeb.Controllers
             estudiante.Activo = activo;
 
             return NoContent();
+
+        }
+
+        [HttpGet("activos")]
+        public IActionResult ObtenerEstudiantesActivos()
+        {
+            List<Estudiante> activos = estudiantes
+                .Where(e => e.Activo == true)
+                .ToList();
+
+            return Ok(activos);
         }
 
     }
