@@ -201,7 +201,45 @@ namespace ActividadPractica2ServiciosWeb.Controllers
                 .ToList();
 
             return Ok(resultados);
-        }  
+        }
+        [HttpGet("estadisticas")]
+        public IActionResult ObtenerEstadisticas()
+        {
+            int cantidadTotal = estudiantes.Count;
+            int cantidadAprobados = estudiantes.Count(e => e.Promedio >= 70);
+            int cantidadReprobados = estudiantes.Count(e => e.Promedio < 70);
+            decimal promedioGeneral = estudiantes.Average(e => e.Promedio);
+            decimal mejorPromedio = estudiantes.Max(e => e.Promedio);
+            decimal peorPromedio = estudiantes.Min(e => e.Promedio);
+
+            var estadisticas = new
+            {
+                cantidadTotal,
+                cantidadAprobados,
+                cantidadReprobados,
+                promedioGeneral,
+                mejorPromedio,
+                peorPromedio
+            };
+
+            return Ok(estadisticas);
+        }
+        [HttpPut("{id}/estado")]
+        public IActionResult CambiarEstadoEstudiante(
+    int id,
+    [FromQuery] bool activo)
+        {
+            Estudiante? estudiante = estudiantes.FirstOrDefault(e => e.Id == id);
+
+            if (estudiante == null)
+            {
+                return NotFound();
+            }
+
+            estudiante.Activo = activo;
+
+            return NoContent();
+        }
 
     }
 }
