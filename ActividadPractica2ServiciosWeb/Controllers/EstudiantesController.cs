@@ -190,6 +190,18 @@ namespace ActividadPractica2ServiciosWeb.Controllers
 
             return Ok(resultados);
         }
+        [HttpGet("rango")]
+        public IActionResult FiltrarPorRango(
+    [FromQuery] decimal promedioDesde,
+    [FromQuery] decimal promedioHasta)
+        {
+            List<Estudiante> resultados = estudiantes
+                .Where(e => e.Promedio >= promedioDesde &&
+                            e.Promedio <= promedioHasta)
+                .ToList();
+
+            return Ok(resultados);
+        }  
 
     }
 }
